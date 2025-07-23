@@ -1,156 +1,4 @@
-    /* CSS Variables for a futuristic theme */
-    :root {
-      --bg-color: #02001a;
-      --primary-color: #00f2ff;
-      --secondary-color: #8e44ad;
-      --text-color: #e0e0e0;
-      --container-bg: rgba(10, 10, 30, 0.7);
-      --glass-border: rgba(0, 242, 255, 0.2);
-      --glow-color: rgba(0, 242, 255, 0.5);
-    }
-
-    /* General Body and Dark Theme Styling */
-    body {
-      background-color: var(--bg-color);
-      color: var(--text-color);
-      font-family: 'Poppins', sans-serif;
-      line-height: 1.8;
-      overflow-x: hidden;
-    }
-    
-    /* Animated Neural Network Background */
-    #neural-network-bg {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        z-index: -1;
-    }
-
-    /* Main Container with Glassmorphism */
-    .container {
-      max-width: 1000px;
-      margin: 40px auto;
-      background: var(--container-bg);
-      padding: 40px;
-      border-radius: 15px;
-      border: 1px solid var(--glass-border);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-      position: relative;
-      z-index: 1;
-    }
-
-    /* Animated Header */
-    .header {
-      background: linear-gradient(135deg, #0d6efd, #6610f2, #00f2ff);
-      background-size: 200% 200%;
-      color: white;
-      padding: 40px 20px;
-      border-radius: 10px;
-      text-align: center;
-      margin-bottom: 40px;
-      animation: gradient-animation 10s ease infinite;
-    }
-
-    @keyframes gradient-animation {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
-
-    h1, h2 {
-      color: #ffffff;
-      padding-bottom: 15px;
-      border-bottom: 1px solid var(--glass-border);
-      text-shadow: 0 0 5px var(--glow-color);
-    }
-
-    h1 { font-weight: 700; }
-    h2 { font-weight: 600; margin-top: 40px; }
-
-    .author-name {
-      font-size: 1rem;
-      color: rgba(255, 255, 255, 0.85);
-      margin-top: 10px;
-      margin-bottom: 0;
-    }
-	
-    a {
-      color: var(--primary-color);
-      text-decoration: none;
-      transition: text-shadow 0.3s ease;
-    }
-    a:hover {
-      text-decoration: none;
-      text-shadow: 0 0 8px var(--glow-color);
-    }
-    
-    /* Newsletter List Styling */
-    .newsletter-list {
-        margin-top: 40px;
-    }
-
-    .newsletter-item {
-        display: block;
-        background-color: rgba(0, 0, 0, 0.2);
-        padding: 25px;
-        border-left: 4px solid var(--primary-color);
-        margin-top: 20px;
-        border-radius: 8px;
-        transition: box-shadow 0.3s ease, transform 0.3s ease, background-color 0.3s ease;
-        color: var(--text-color);
-    }
-
-    .newsletter-item:hover {
-        box-shadow: 0 0 20px var(--glow-color);
-        transform: translateY(-5px);
-        background-color: rgba(0, 242, 255, 0.1);
-    }
-
-    .newsletter-item h3 {
-        margin: 0 0 10px 0;
-        color: var(--primary-color);
-        font-size: 1.5rem;
-        border-bottom: none;
-        text-shadow: none;
-    }
-
-    .newsletter-item p {
-        margin: 0;
-        font-size: 1rem;
-        color: rgba(255, 255, 255, 0.8);
-    }
-    
-    .footer {
-      background-color: rgba(0, 0, 0, 0.2);
-      padding: 25px;
-      border-left: 4px solid var(--primary-color);
-      margin-top: 40px;
-      border-radius: 8px;
-      text-align: center;
-    }
-
-    /* Animation on Scroll */
-    .animate-on-scroll {
-      opacity: 0;
-      transform: translateY(30px);
-      transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-    }
-    .animate-on-scroll.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    /* Responsive Design */
-    @media (max-width: 768px) {
-      .container { padding: 25px; margin: 20px; }
-      h1 { font-size: 1.8rem; }
-      h2 { font-size: 1.5rem; }
-    }
-    /* CSS Variables for a futuristic theme */
+/* CSS Variables for a futuristic theme */
     :root {
       --bg-color: #02001a;
       --primary-color: #00f2ff;
@@ -224,10 +72,13 @@
     h1 { font-weight: 700; }
     h2 { font-weight: 600; }
 
-    p { text-align: justify; font-weight: 300; }
+    .author-name {
+      font-size: 1rem;
+      color: rgba(255, 255, 255, 0.85);
+      margin-top: 10px;
+      margin-bottom: 0;
+    }
 	
-    ul { padding-left: 20px; }
-
     a {
       color: var(--primary-color);
       text-decoration: none;
@@ -237,9 +88,85 @@
       text-decoration: none;
       text-shadow: 0 0 8px var(--glow-color);
     }
+    
+    /* Newsletter List Styling */
+    .newsletter-list {
+        margin-top: 40px;
+    }
+
+    .newsletter-item {
+        display: block;
+        background-color: rgba(0, 0, 0, 0.2);
+        padding: 25px;
+        border-left: 4px solid var(--primary-color);
+        margin-top: 20px;
+        border-radius: 8px;
+        transition: box-shadow 0.3s ease, transform 0.3s ease, background-color 0.3s ease;
+        color: var(--text-color);
+    }
+
+    .newsletter-item:hover {
+        box-shadow: 0 0 20px var(--glow-color);
+        transform: translateY(-5px);
+        background-color: rgba(0, 242, 255, 0.1);
+    }
+
+    .newsletter-item h3 {
+        margin: 0 0 10px 0;
+        color: var(--primary-color);
+        font-size: 1.5rem;
+        border-bottom: none;
+        text-shadow: none;
+    }
+
+    .newsletter-item p {
+        margin: 0;
+        font-size: 1rem;
+        color: rgba(255, 255, 255, 0.8);
+    }
+    
+    .footer {
+      background-color: rgba(0, 0, 0, 0.2);
+      padding: 25px;
+      border-left: 4px solid var(--primary-color);
+      margin-top: 40px;
+      border-radius: 8px;
+      text-align: center;
+    }
+
+    .footer .sponsor-iframe {
+      margin-top: 20px;
+      border-radius: 8px;
+      border: 1px solid var(--glass-border);
+      width: 100%;
+      max-width: 600px;
+      height: 225px;
+    }
+
+    /* Animation on Scroll */
+    .animate-on-scroll {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    }
+    .animate-on-scroll.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .container { padding: 25px; margin: 20px; }
+      h1 { font-size: 1.8rem; }
+      h2 { font-size: 1.5rem; }
+    }
+
+    p { text-align: justify; font-weight: 300; }
+	
+    ul { padding-left: 20px; }
 
     /* Special Sections Styling */
-    .keywords, .cta, .license, .footer {
+    .keywords, .cta, .license {
       background-color: rgba(0, 0, 0, 0.2);
       padding: 25px;
       border-left: 4px solid var(--primary-color);
@@ -327,22 +254,5 @@
         transform: scale(1.1);
     }
 
-    /* Animation on Scroll */
-    .animate-on-scroll {
-      opacity: 0;
-      transform: translateY(30px);
-      transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-    }
-    .animate-on-scroll.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    /* Responsive Design */
-    @media (max-width: 768px) {
-      .container { padding: 25px; margin: 20px; }
-    }
-
 .back-home { text-align: right; margin-top: 10px; }
 .back-home a { color: var(--primary-color); }
-
