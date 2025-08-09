@@ -3,6 +3,7 @@
 This repository hosts a simple microsite used to publish my newsletter. The landing page lists available newsletter issues.
 
 * `index.html` – landing page with a list of newsletters
+* `404.html` – redirect helper so deep links work on GitHub Pages
 * `vol1.html` – first newsletter issue
 * `vol2.html` – education roadmap with a light-themed, interactive D3.js Sankey chart
 
