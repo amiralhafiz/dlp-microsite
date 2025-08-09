@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <link rel="stylesheet" href="../style/style.css">
+  <link rel="stylesheet" href="style/style.css">
   <style>
     /* page-local tweaks */
     .toolbar { display:flex; gap:12px; align-items:center; margin:14px 0 22px; }
@@ -26,7 +26,7 @@
   <canvas id="neural-network-bg"></canvas>
 
   <div class="container">
-    <nav class="back-home"><a href="../index.html">Home</a></nav>
+    <nav class="back-home"><a href="index.html">Home</a></nav>
     <header class="header animate-on-scroll">
       <h1><i class="fas fa-diagram-project"></i> Vol. 2 – My Edu Roadmap (Tech → Law)</h1>
       <p class="text-center mb-0"><em>Interactive pathway with French modules & CLP alignment</em></p>
@@ -54,34 +54,34 @@
 
   <!-- libs -->
   <script src="https://cdn.plot.ly/plotly-2.32.0.min.js"></script>
-  <script src="../style/main.js"></script>
+  <script src="style/main.js"></script>
   <script>
     // --- Data ---
     const nodesInfo = [
       ["Master of Information Security",
-        "Postgrad specialization: cyberlaw & ethics, cloud security, cryptography, forensics, pen-testing and secure software—prep for digital-evidence & cyber-offence work."],
-      ["BLS (Hons) LW213 — Core",
-        "UiTM BLS core: Contract, Tort, Criminal Law, Constitutional Law, Land Law, Equity & Trusts + Legal Research, Mooting, Honours Project."],
-      ["Bahasa Perancis (BFR401/451/501)",
-        "French modules across three levels for legal/professional communication; adds international capability."],
-      ["Law & Economics",
-        "Elective I. Economic analysis of law/policy. Strengthens advisory work and argumentation in regulatory, corporate & competition contexts."],
-      ["Law & Media",
-        "Elective II. Defamation, privacy, broadcasting, platform liability—useful for evidence & digital communications disputes."],
-      ["Competition / Consumer Protection",
-        "Elective III. Market conduct & consumer rights—relevant for fintech, e-commerce & platform cases."],
-      ["IP Law I",
-        "Elective IV. Copyright, patents, trademarks, confidential info—great fit for software/AI assets."],
-      ["IP Law II",
-        "Elective V. Advanced IP, licensing & enforcement, often cross-border."],
-      ["AI & Law / Cyber Law",
-        "Elective VI. Regulation of AI, data protection, computer misuse, forensics—directly aligned to your InfoSec background."],
-      ["CLP",
-        "Certificate in Legal Practice: General Paper, Evidence, Civil Proc., Criminal Proc., Professional Practice (qualifying exam)."],
-      ["Pupillage (9 months)",
-        "Chambering under a qualified lawyer; rotate across IP/Tech, Litigation, Corporate."],
-      ["Admission to Malaysian Bar",
-        "Called as Advocate & Solicitor after CLP + pupillage."]
+        "Your current postgraduate specialization. Builds deep literacy in cyberlaw & ethics, cloud security, cryptography, forensics, pen-testing and secure software—perfect prep for digital-evidence and cyber-offence work."],
+      ["BLS (Hons) LW213 Core Subjects",
+        "Malaysian Legal System, Contract, Tort, Criminal Law, Constitutional Law, Land Law, Equity & Trusts, Legal Research, Mooting, Honours Project."],
+      ["Bahasa Perancis I–III",
+        "French for Legal & Professional Communication."],
+      ["Elective I: Law & Economics",
+        "Boosts CLP General Paper & Professional Practice."],
+      ["Elective II: Law & Media",
+        "Boosts CLP Evidence & Professional Practice."],
+      ["Elective III: Competition Law / Consumer Protection Law",
+        "Boosts CLP General Paper & Professional Practice."],
+      ["Elective IV: Intellectual Property Law I",
+        "Boosts CLP Evidence & Professional Practice."],
+      ["Elective V: Intellectual Property Law II",
+        "Boosts CLP Evidence & Professional Practice."],
+      ["Elective VI: Artificial Intelligence & Law / Cyber Law",
+        "Boosts CLP Evidence, Criminal Procedure & Professional Practice."],
+      ["Certificate in Legal Practice – CLP",
+        "General Paper, Evidence, Civil Procedure, Criminal Procedure, Professional Practice."],
+      ["Pupillage / Chambering",
+        "9 months practical legal training under a qualified lawyer."],
+      ["Admission to the Malaysian Bar",
+        "Advocate & Solicitor."]
     ];
 
     const nodes = nodesInfo.map(([n]) => n);
@@ -89,23 +89,40 @@
     const idx = Object.fromEntries(nodes.map((n, i) => [n, i]));
 
     const links = [
-      ["Master of Information Security", "BLS (Hons) LW213 — Core", 1],
-      ["BLS (Hons) LW213 — Core", "Bahasa Perancis (BFR401/451/501)", 1],
-      ["BLS (Hons) LW213 — Core", "Law & Economics", 1],
-      ["BLS (Hons) LW213 — Core", "Law & Media", 1],
-      ["BLS (Hons) LW213 — Core", "Competition / Consumer Protection", 1],
-      ["BLS (Hons) LW213 — Core", "IP Law I", 1],
-      ["BLS (Hons) LW213 — Core", "IP Law II", 1],
-      ["BLS (Hons) LW213 — Core", "AI & Law / Cyber Law", 1],
-      ["Law & Economics", "CLP", 1],
-      ["Law & Media", "CLP", 1],
-      ["Competition / Consumer Protection", "CLP", 1],
-      ["IP Law I", "CLP", 1],
-      ["IP Law II", "CLP", 1],
-      ["AI & Law / Cyber Law", "CLP", 1],
-      ["CLP", "Pupillage (9 months)", 1],
-      ["Pupillage (9 months)", "Admission to Malaysian Bar", 1],
+      ["Master of Information Security", "BLS (Hons) LW213 Core Subjects", 1],
+      ["BLS (Hons) LW213 Core Subjects", "Bahasa Perancis I–III", 1],
+      ["BLS (Hons) LW213 Core Subjects", "Elective I: Law & Economics", 1],
+      ["BLS (Hons) LW213 Core Subjects", "Elective II: Law & Media", 1],
+      ["BLS (Hons) LW213 Core Subjects", "Elective III: Competition Law / Consumer Protection Law", 1],
+      ["BLS (Hons) LW213 Core Subjects", "Elective IV: Intellectual Property Law I", 1],
+      ["BLS (Hons) LW213 Core Subjects", "Elective V: Intellectual Property Law II", 1],
+      ["BLS (Hons) LW213 Core Subjects", "Elective VI: Artificial Intelligence & Law / Cyber Law", 1],
+      ["Elective I: Law & Economics", "Certificate in Legal Practice – CLP", 1],
+      ["Elective II: Law & Media", "Certificate in Legal Practice – CLP", 1],
+      ["Elective III: Competition Law / Consumer Protection Law", "Certificate in Legal Practice – CLP", 1],
+      ["Elective IV: Intellectual Property Law I", "Certificate in Legal Practice – CLP", 1],
+      ["Elective V: Intellectual Property Law II", "Certificate in Legal Practice – CLP", 1],
+      ["Elective VI: Artificial Intelligence & Law / Cyber Law", "Certificate in Legal Practice – CLP", 1],
+      ["Certificate in Legal Practice – CLP", "Pupillage / Chambering", 1],
+      ["Pupillage / Chambering", "Admission to the Malaysian Bar", 1],
     ];
+
+    const colors = [
+      "#ADD8E6", // Master of Information Security
+      "#F5DEB3", // BLS Core
+      "#D8BFD8", // Bahasa Perancis
+      "#FFB6C1", // Elective I
+      "#FFB6C1", // Elective II
+      "#FFB6C1", // Elective III
+      "#FFB6C1", // Elective IV
+      "#FFB6C1", // Elective V
+      "#FFB6C1", // Elective VI
+      "#90EE90", // CLP
+      "#F08080", // Pupillage
+      "#20B2AA"  // Admission
+    ];
+
+    const colorMap = Object.fromEntries(nodes.map((n, i) => [n, colors[i]]));
 
     const source = links.map(([s]) => idx[s]);
     const target = links.map(([, t]) => idx[t]);
@@ -120,11 +137,11 @@
         arrangement: "snap",
         node: {
           label: nodes,
+          color: colors,
           customdata: nodeHover,
           hovertemplate: "%{customdata}<extra></extra>",
           pad: 20, thickness: 20,
           line: { width: 0.7 }
-          // no explicit colors (keeps your dark theme clean)
         },
         link: {
           source, target, value,
@@ -150,6 +167,7 @@
     nodes.forEach(n => {
       const div = document.createElement('div');
       div.className = 'card';
+      div.style.borderLeft = `5px solid ${colorMap[n]}`;
       div.innerHTML = `<h3>${n}</h3><p>${descMap[n]}</p>`;
       descEl.appendChild(div);
     });
