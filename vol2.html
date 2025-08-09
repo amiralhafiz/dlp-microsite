@@ -10,14 +10,22 @@
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <link rel="stylesheet" href="style/style.css">
   <style>
-    /* page-local tweaks */
+    /* light theme overrides */
+    :root {
+      --bg-color: #f8f9fa;
+      --text-color: #212529;
+      --container-bg: rgba(255, 255, 255, 0.8);
+      --glass-border: rgba(0, 0, 0, 0.1);
+      --glow-color: rgba(13, 110, 253, 0.25);
+    }
     .toolbar { display:flex; align-items:center; margin:14px 0 22px; }
-    #chart { border:1px solid #222; border-radius:12px; padding:8px; background:#111; }
+    #chart { border:1px solid #ddd; border-radius:12px; padding:8px; background:#fff; }
     .desc { display:grid; gap:12px; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
-    .card { background:#121212; border:1px solid #222; padding:14px; border-radius:10px; }
-    .card h3 { margin:0 0 6px 0; font-size:16px; color:#e9e9e9; }
-    .card p { margin:0; line-height:1.45; color:#cfcfcf; }
-    .muted { color:#a8a8a8; font-size:13px; }
+    .card { background:#fff; border:1px solid #ddd; padding:14px; border-radius:10px; }
+    .card h3 { margin:0 0 6px 0; font-size:16px; color:#212529; }
+    .card p { margin:0; line-height:1.45; color:#555; }
+    .muted { color:#666; font-size:13px; }
+    .tooltip { position:absolute; pointer-events:none; background:#fff; border:1px solid #ccc; padding:8px 10px; border-radius:4px; box-shadow:0 2px 8px rgba(0,0,0,0.15); opacity:0; transition:opacity .3s; font-size:14px; }
   </style>
 </head>
 <body>
@@ -50,6 +58,8 @@
   </div>
 
   <button id="backToTopBtn" title="Go to top"><i class="fas fa-arrow-up"></i></button>
+
+  <div id="tooltip" class="tooltip"></div>
 
   <!-- libs -->
   <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
@@ -107,24 +117,11 @@
       ["Pupillage / Chambering", "Admission to the Malaysian Bar", 1],
     ];
 
-    const colors = [
-      "#ADD8E6", // Master of Information Security
-      "#F5DEB3", // BLS Core
-      "#D8BFD8", // Bahasa Perancis
-      "#FFB6C1", // Elective I
-      "#FFB6C1", // Elective II
-      "#FFB6C1", // Elective III
-      "#FFB6C1", // Elective IV
-      "#FFB6C1", // Elective V
-      "#FFB6C1", // Elective VI
-      "#90EE90", // CLP
-      "#F08080", // Pupillage
-      "#20B2AA"  // Admission
-    ];
-
-    const colorMap = Object.fromEntries(nodes.map((n, i) => [n, colors[i]]));
+    const color = d3.scaleOrdinal(d3.schemeSet3);
+    const colorMap = Object.fromEntries(nodes.map((n, i) => [n, color(i)]));
 
     const chartDiv = document.getElementById('chart');
+    const tooltip = d3.select('#tooltip');
 
     function draw() {
       chartDiv.innerHTML = '';
@@ -146,7 +143,28 @@
         links: links.map(([s,t,v]) => ({source: idx[s], target: idx[t], value: v}))
       });
 
-      svg.append('g')
+      const link = svg.append('g')
+        .attr('fill', 'none')
+        .selectAll('path')
+        .data(graph.links)
+        .join('path')
+        .attr('d', d3.sankeyLinkHorizontal())
+        .attr('stroke', '#bbb')
+        .attr('stroke-width', d => Math.max(1, d.width))
+        .attr('stroke-opacity', 0.5)
+        .on('mouseover', (event, d) => {
+          tooltip.style('opacity', 1).html(`${d.source.name} → ${d.target.name}`);
+          d3.select(event.currentTarget)
+            .attr('stroke-opacity', 0.8)
+            .attr('stroke', colorMap[d.source.name]);
+        })
+        .on('mousemove', event => tooltip.style('left', `${event.pageX + 10}px`).style('top', `${event.pageY + 10}px`))
+        .on('mouseout', event => {
+          tooltip.style('opacity', 0);
+          d3.select(event.currentTarget).attr('stroke', '#bbb').attr('stroke-opacity', 0.5);
+        });
+
+      const node = svg.append('g')
         .selectAll('rect')
         .data(graph.nodes)
         .join('rect')
@@ -155,23 +173,17 @@
         .attr('height', d => d.y1 - d.y0)
         .attr('width', d => d.x1 - d.x0)
         .attr('fill', d => colorMap[d.name])
-        .append('title')
-        .text(d => `${d.name}\n${descMap[d.name]}`);
-
-      const link = svg.append('g')
-        .attr('fill', 'none')
-        .selectAll('path')
-        .data(graph.links)
-        .join('path')
-        .attr('d', d3.sankeyLinkHorizontal())
-        .attr('stroke', '#888')
-        .attr('stroke-width', d => Math.max(1, d.width))
-        .attr('stroke-opacity', 0.5)
-        .on('mouseover', function() { d3.select(this).attr('stroke-opacity', 0.8); })
-        .on('mouseout', function() { d3.select(this).attr('stroke-opacity', 0.5); });
-
-      link.append('title')
-        .text(d => `${d.source.name} → ${d.target.name}`);
+        .on('mouseover', (event, d) => {
+          tooltip.style('opacity', 1).html(`<strong>${d.name}</strong><br>${descMap[d.name]}`);
+          link.filter(l => l.source === d || l.target === d)
+            .attr('stroke-opacity', 0.8)
+            .attr('stroke', colorMap[d.name]);
+        })
+        .on('mousemove', event => tooltip.style('left', `${event.pageX + 10}px`).style('top', `${event.pageY + 10}px`))
+        .on('mouseout', () => {
+          tooltip.style('opacity', 0);
+          link.attr('stroke', '#bbb').attr('stroke-opacity', 0.5);
+        });
 
       svg.append('g')
         .style('font', '14px sans-serif')

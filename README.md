@@ -4,7 +4,7 @@ This repository hosts a simple microsite used to publish my newsletter. The land
 
 * `index.html` – landing page with a list of newsletters
 * `vol1.html` – first newsletter issue
-* `vol2.html` – education roadmap with an interactive D3.js chart
+* `vol2.html` – education roadmap with a light-themed, interactive D3.js Sankey chart
 
 ---
 
