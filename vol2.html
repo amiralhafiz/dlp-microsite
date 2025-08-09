@@ -11,9 +11,7 @@
   <link rel="stylesheet" href="style/style.css">
   <style>
     /* page-local tweaks */
-    .toolbar { display:flex; gap:12px; align-items:center; margin:14px 0 22px; }
-    .export-btn { background:#1f6feb; color:#fff; border:none; padding:10px 14px; border-radius:8px; cursor:pointer; font-weight:600; }
-    .export-btn:hover { background:#2a7ff0; }
+    .toolbar { display:flex; align-items:center; margin:14px 0 22px; }
     #chart { border:1px solid #222; border-radius:12px; padding:8px; background:#111; }
     .desc { display:grid; gap:12px; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
     .card { background:#121212; border:1px solid #222; padding:14px; border-radius:10px; }
@@ -33,7 +31,6 @@
     </header>
 
     <div class="toolbar animate-on-scroll">
-      <button class="export-btn" id="pdfBtn"><i class="fas fa-file-export"></i> Export as PDF</button>
       <span class="muted">Tip: hover nodes/flows for details</span>
     </div>
 
@@ -55,7 +52,8 @@
   <button id="backToTopBtn" title="Go to top"><i class="fas fa-arrow-up"></i></button>
 
   <!-- libs -->
-  <script src="https://cdn.plot.ly/plotly-2.32.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+  <script src="https://cdn.jsdelivr.net/npm/d3-sankey@0.12"></script>
   <script src="style/main.js"></script>
   <script>
     // --- Data ---
@@ -126,43 +124,69 @@
 
     const colorMap = Object.fromEntries(nodes.map((n, i) => [n, colors[i]]));
 
-    const source = links.map(([s]) => idx[s]);
-    const target = links.map(([, t]) => idx[t]);
-    const value  = links.map(([, , v]) => v);
-
-    const nodeHover = nodes.map(n => `<b>${n}</b><br>${descMap[n]}`);
-
-    // --- Chart (dark theme) ---
-    const fig = {
-      data: [{
-        type: "sankey",
-        arrangement: "snap",
-        node: {
-          label: nodes,
-          color: colors,
-          customdata: nodeHover,
-          hovertemplate: "%{customdata}<extra></extra>",
-          pad: 20, thickness: 20,
-          line: { width: 0.7 }
-        },
-        link: {
-          source, target, value,
-          hovertemplate: "<b>%{source.label}</b> → <b>%{target.label}</b><extra></extra>"
-        }
-      }],
-      layout: {
-        template: "plotly_dark",
-        title: "Tech → Law Pathway (with French & CLP Alignment)",
-        font: { size: 14 },
-        paper_bgcolor: "#111111",
-        plot_bgcolor: "#111111",
-        margin: { l: 16, r: 16, t: 60, b: 16 },
-        height: 700
-      }
-    };
-
     const chartDiv = document.getElementById('chart');
-    Plotly.newPlot(chartDiv, fig.data, fig.layout, {displayModeBar: true, responsive: true});
+
+    function draw() {
+      chartDiv.innerHTML = '';
+      const width = chartDiv.clientWidth;
+      const height = 700;
+
+      const svg = d3.select(chartDiv).append('svg')
+        .attr('viewBox', `0 0 ${width} ${height}`)
+        .attr('width', width)
+        .attr('height', height);
+
+      const sankey = d3.sankey()
+        .nodeWidth(20)
+        .nodePadding(16)
+        .extent([[1,1],[width-1,height-6]]);
+
+      const graph = sankey({
+        nodes: nodes.map(n => ({name: n})),
+        links: links.map(([s,t,v]) => ({source: idx[s], target: idx[t], value: v}))
+      });
+
+      svg.append('g')
+        .selectAll('rect')
+        .data(graph.nodes)
+        .join('rect')
+        .attr('x', d => d.x0)
+        .attr('y', d => d.y0)
+        .attr('height', d => d.y1 - d.y0)
+        .attr('width', d => d.x1 - d.x0)
+        .attr('fill', d => colorMap[d.name])
+        .append('title')
+        .text(d => `${d.name}\n${descMap[d.name]}`);
+
+      const link = svg.append('g')
+        .attr('fill', 'none')
+        .selectAll('path')
+        .data(graph.links)
+        .join('path')
+        .attr('d', d3.sankeyLinkHorizontal())
+        .attr('stroke', '#888')
+        .attr('stroke-width', d => Math.max(1, d.width))
+        .attr('stroke-opacity', 0.5)
+        .on('mouseover', function() { d3.select(this).attr('stroke-opacity', 0.8); })
+        .on('mouseout', function() { d3.select(this).attr('stroke-opacity', 0.5); });
+
+      link.append('title')
+        .text(d => `${d.source.name} → ${d.target.name}`);
+
+      svg.append('g')
+        .style('font', '14px sans-serif')
+        .selectAll('text')
+        .data(graph.nodes)
+        .join('text')
+        .attr('x', d => d.x0 < width / 2 ? d.x1 + 6 : d.x0 - 6)
+        .attr('y', d => (d.y1 + d.y0) / 2)
+        .attr('dy', '0.35em')
+        .attr('text-anchor', d => d.x0 < width / 2 ? 'start' : 'end')
+        .text(d => d.name);
+    }
+
+    draw();
+    window.addEventListener('resize', draw);
 
     // Descriptions under chart
     const descEl = document.getElementById('desc');
@@ -172,16 +196,6 @@
       div.style.borderLeft = `5px solid ${colorMap[n]}`;
       div.innerHTML = `<h3>${n}</h3><p>${descMap[n]}</p>`;
       descEl.appendChild(div);
-    });
-
-    // PDF export button (falls back to PNG)
-    document.getElementById('pdfBtn').addEventListener('click', async () => {
-      try {
-        await Plotly.downloadImage(chartDiv, {format: 'pdf', filename: 'edu_roadmap_vol2'});
-      } catch (err) {
-        console.warn('PDF export failed, falling back to PNG.', err);
-        await Plotly.downloadImage(chartDiv, {format: 'png', filename: 'edu_roadmap_vol2'});
-      }
     });
   </script>
 </body>
